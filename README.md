@@ -3,6 +3,24 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 #DEMO
 ![Simulator Screen Recording - iPhone 16 Pro Max - 2025-10-17 at 20 43 27](https://github.com/user-attachments/assets/57d242bd-9346-4115-8e68-12eea677f05b)
 
+
+#using Dependencies 
+
+ "@react-native/new-app-screen": "0.82.0",
+    "@react-navigation/native": "^7.1.18",
+    "@react-navigation/native-stack": "^7.3.28",
+    "axios": "^1.12.2",
+    "react": "19.1.1",
+    "react-native": "0.82.0",
+    "react-native-auto-skeleton": "^0.1.28",
+    "react-native-gesture-handler": "^2.28.0",
+    "react-native-mmkv": "^3.3.3",
+    "react-native-modal": "^14.0.0-rc.1",
+    "react-native-reanimated": "^4.1.3",
+    "react-native-safe-area-context": "^5.6.1",
+    "react-native-screens": "^4.17.1",
+    "react-native-worklets": "^0.6.1"
+    
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
