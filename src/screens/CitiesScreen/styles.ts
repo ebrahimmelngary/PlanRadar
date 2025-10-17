@@ -9,8 +9,13 @@ export default StyleSheet.create({
     margin: 0,
     justifyContent: 'flex-end',
   },
-  list:{
-    paddingVertical:16,
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  list: {
+    paddingVertical: 16,
   },
   modalContent: {
     backgroundColor: Colors.secondary,
@@ -19,7 +24,22 @@ export default StyleSheet.create({
     borderTopRightRadius: 16,
     paddingBottom: 30,
     minHeight: '40%',
-
+  },
+  searchButton: {
+    width: 70,
+    height: 40,
+    backgroundColor: Colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    marginBottom: 16,
+    position: 'absolute',
+    right: 16,
+    top: 17,
+  },
+  searchButtonText: {
+    color: Colors.secondary,
+    fontWeight: 'bold',
   },
   searchContainer: {
     borderWidth: 1,
@@ -85,8 +105,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-   height: 56,
-   paddingHorizontal: 16,
+    height: 56,
+    paddingHorizontal: 16,
   },
   cityCardInfo: {
     flexDirection: 'row',
@@ -105,5 +125,11 @@ export default StyleSheet.create({
   infoIcon: {
     width: 30,
     height: 30,
+  },
+  noCityBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    flex: 1 / 2,
   },
 });

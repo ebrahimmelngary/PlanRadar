@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -18,24 +19,15 @@ import { useWeatherData } from '../../hooks/useWeatherData';
 import { CONFIG } from '../../configs';
 import { Colors } from '../../constant/colors';
 import { STORAGE_KEY } from '../../constant/keys';
-import { useDebounce } from '../../hooks/useDebounce';
 import { storage } from '../../../App';
 import { Icons } from '../../constant/icons';
 
 const CitiesScreen = () => {
   const navigation = useNavigation();
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [query, setQuery] = useState<string>('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [query, setQuery] = useState('');
   const [savedCities, setSavedCities] = useState<string[]>([]);
   const { city, weather, loading, error, fetchWeather } = useWeatherData('');
-
-  const debouncedQuery = useDebounce(query, 800);
-
-  useEffect(() => {
-    if (debouncedQuery.trim().length > 2) {
-      fetchWeather(debouncedQuery.trim());
-    }
-  }, [debouncedQuery]);
 
   useEffect(() => {
     try {
@@ -65,8 +57,13 @@ const CitiesScreen = () => {
   };
 
   const handleCitySelect = (cityName: string) => {
-    setQuery(cityName);
     navigation.navigate('DetailsScreen', { cityName });
+  };
+
+  const handleSearch = async () => {
+    if (query.trim().length < 2) return;
+    await fetchWeather(query.trim());
+    setQuery('');
   };
 
   const toggleModal = () => setIsVisible(!isVisible);
@@ -90,18 +87,19 @@ const CitiesScreen = () => {
     </TouchableOpacity>
   );
 
-  const citiesKeyExtractor = (item: string, index: number) =>
-    `${item}-${index}`;
-
   return (
     <View style={styles.container}>
       <Header title="Cities" />
       <FlatList
         data={savedCities}
-        keyExtractor={citiesKeyExtractor}
+        keyExtractor={(item, index) => `${item}-${index}`}
         renderItem={renderCityItem}
         style={styles.list}
-        ListEmptyComponent={<Text>No saved cities yet.</Text>}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text>No saved cities yet.</Text>
+          </View>
+        }
       />
       <ImageBackground style={styles.container} source={Icons.background}>
         <ReactNativeModal
@@ -109,36 +107,50 @@ const CitiesScreen = () => {
           style={styles.modal}
           onBackdropPress={toggleModal}
         >
-          <View style={styles.modalContent}>
-            <View style={styles.searchContainer}>
-              <Image source={Icons.search} style={styles.searchIcon} />
-              <TextInput
-                placeholder="Enter city name"
-                value={query}
-                onChangeText={setQuery}
-              />
-            </View>
-
-            {loading && <ActivityIndicator color={Colors.primary} />}
-
-            {error && <Text style={styles.error}>{error}</Text>}
-
-            {weather && (
-              <View style={styles.weatherBox}>
-                <Text style={styles.city}>{city}</Text>
-                <Text>{Math.round(weather.main.temp)}°C</Text>
-                <Text style={styles.desc}>
-                  {weather?.weather[0].description}
-                </Text>
-                <Image
-                  style={styles.forecastIcon}
-                  source={{
-                    uri: `${CONFIG.Base_URL}/img/wn/${weather.weather[0].icon}@4x.png`,
-                  }}
+          <KeyboardAvoidingView behavior="padding">
+            <View style={styles.modalContent}>
+              <View style={styles.searchContainer}>
+                <Image source={Icons.search} style={styles.searchIcon} />
+                <TextInput
+                  placeholder="Enter city name"
+                  value={query}
+                  onChangeText={setQuery}
                 />
               </View>
-            )}
-          </View>
+
+              <TouchableOpacity
+                style={styles.searchButton}
+                onPress={handleSearch}
+                disabled={loading}
+              >
+                <Text style={styles.searchButtonText}>Search</Text>
+              </TouchableOpacity>
+
+              {loading && <ActivityIndicator color={Colors.primary} />}
+
+              {error && <Text style={styles.error}>{error}</Text>}
+
+              {weather ? (
+                <View style={styles.weatherBox}>
+                  <Text style={styles.city}>{city}</Text>
+                  <Text>{Math.round(weather.main.temp)}°C</Text>
+                  <Text style={styles.desc}>
+                    {weather?.weather[0].description}
+                  </Text>
+                  <Image
+                    style={styles.forecastIcon}
+                    source={{
+                      uri: `${CONFIG.Base_URL}/img/wn/${weather.weather[0].icon}@4x.png`,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View style={styles.noCityBox}>
+                  <Text>Please write your city and click Search</Text>
+                </View>
+              )}
+            </View>
+          </KeyboardAvoidingView>
         </ReactNativeModal>
 
         <TouchableOpacity style={styles.button} onPress={toggleModal}>
