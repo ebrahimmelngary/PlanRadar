@@ -5,7 +5,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 
 #using Dependencies 
-
+```
  "@react-native/new-app-screen": "0.82.0",
     "@react-navigation/native": "^7.1.18",
     "@react-navigation/native-stack": "^7.3.28",
@@ -20,7 +20,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
     "react-native-safe-area-context": "^5.6.1",
     "react-native-screens": "^4.17.1",
     "react-native-worklets": "^0.6.1"
-    
+    ```
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
